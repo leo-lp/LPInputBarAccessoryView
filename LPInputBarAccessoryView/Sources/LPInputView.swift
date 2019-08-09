@@ -12,9 +12,9 @@ open class LPInputView: UIView {
     private var accessoryViews: [(view: LPInputAccessory, bottom: NSLayoutConstraint, height: CGFloat)]?
     private let keyboard = LPKeyboardManager()
     private var barBottomConstraint: NSLayoutConstraint?
-    private var isHiddenWhenResign: Bool = true
+    private var isHiddenWhenResign: Bool
     public var isShowing: Bool { return barBottomConstraint?.constant != 0.0 }
-    public let bar = LPInputBar()
+    public let bar = UIView()
     public private(set) var barLayoutSet: LPLayoutSet?
     public private(set) var accesoryContainer: UIView?
     
@@ -46,23 +46,7 @@ open class LPInputView: UIView {
         }
         
         keyboard.on(event: .willChangeFrame) { [weak self](notification) in
-            guard let `self` = self else { return }
-            if !notification.isHidden && self.isHiddenWhenResign {
-                self.alpha = 1
-                self.isHidden = false
-            } else if self.isHiddenWhenResign {
-                self.alpha = 0.3
-                self.isHidden = true
-            }
-            self.linearAnimate({
-                if notification.isHidden {
-                    self.barBottomConstraint?.constant = 0
-                } else {
-                    self.barBottomConstraint?.constant = -notification.endFrame.height
-                    self.accessoryViews?.forEach { $0.bottom.constant = $0.height }
-                }
-                self.superview?.layoutIfNeeded()
-            }, duration: notification.timeInterval, options: notification.animationOptions)
+            self?.keyboardFrameWillChange(notification)
         }
     }
     
@@ -102,7 +86,7 @@ open class LPInputView: UIView {
         }
     }
     
-    public func showAccessory(tag: Int) {
+    open func showAccessory(tag: Int) {
         if isHiddenWhenResign { isHidden = false }
         linearAnimate({
             if !LPKeyboardManager.isKeyboardHidden { self.endEditing(true) }
@@ -116,7 +100,7 @@ open class LPInputView: UIView {
     }
     
     /// 隐藏键盘/MoreView
-    public func hide(animated: Bool) {
+    open func hide(animated: Bool) {
         if animated {
             linearAnimate({
                 if !LPKeyboardManager.isKeyboardHidden { self.endEditing(true) }
@@ -135,6 +119,25 @@ open class LPInputView: UIView {
                 self.isHidden = true
             }
         }
+    }
+    
+    open func keyboardFrameWillChange(_ notification: LPKeyboardNotification) {
+        if !notification.isHidden && isHiddenWhenResign {
+            alpha = 1
+            isHidden = false
+        } else if isHiddenWhenResign {
+            alpha = 0.3
+            isHidden = true
+        }
+        linearAnimate({
+            if notification.isHidden {
+                self.barBottomConstraint?.constant = 0
+            } else {
+                self.barBottomConstraint?.constant = -notification.endFrame.height
+                self.accessoryViews?.forEach { $0.bottom.constant = $0.height }
+            }
+            self.superview?.layoutIfNeeded()
+        }, duration: notification.timeInterval, options: notification.animationOptions)
     }
     
     private func linearAnimate(_ animations: @escaping () -> Void,

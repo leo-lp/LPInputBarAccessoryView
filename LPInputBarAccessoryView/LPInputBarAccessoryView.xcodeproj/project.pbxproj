@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1862CF5B22FD8B09000CF785 /* LPButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862CF5A22FD8B09000CF785 /* LPButton.swift */; };
 		18CFEF5A22FAD07700236190 /* LPLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFEF5922FAD07700236190 /* LPLayoutConstraint.swift */; };
 		18CFEF5C22FAD0BE00236190 /* LPInputStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFEF5B22FAD0BE00236190 /* LPInputStackView.swift */; };
 		18CFEF5E22FAD0EC00236190 /* LPKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFEF5D22FAD0EC00236190 /* LPKeyboardManager.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1862CF5A22FD8B09000CF785 /* LPButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPButton.swift; sourceTree = "<group>"; };
 		18CFEF2B22FACEE800236190 /* LPInputBarAccessoryView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LPInputBarAccessoryView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		18CFEF5522FACF5800236190 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18CFEF5922FAD07700236190 /* LPLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LPLayoutConstraint.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				18CFEF6322FAD27A00236190 /* LPInputView.swift */,
+				1862CF5A22FD8B09000CF785 /* LPButton.swift */,
 				18CFEF6522FAD28700236190 /* LPInputBar.swift */,
 				18CFEF6722FAD2A000236190 /* LPInputAccessory.swift */,
 				18CFEF5922FAD07700236190 /* LPLayoutConstraint.swift */,
@@ -149,6 +152,7 @@
 				18CFEF6822FAD2A000236190 /* LPInputAccessory.swift in Sources */,
 				18CFEF6622FAD28700236190 /* LPInputBar.swift in Sources */,
 				18CFEF5E22FAD0EC00236190 /* LPKeyboardManager.swift in Sources */,
+				1862CF5B22FD8B09000CF785 /* LPButton.swift in Sources */,
 				18CFEF5A22FAD07700236190 /* LPLayoutConstraint.swift in Sources */,
 				18CFEF6422FAD27A00236190 /* LPInputView.swift in Sources */,
 			);

@@ -19,7 +19,7 @@ class LPRoomInputView: LPInputView {
         textField.placeholder = "Say..."
         textField.resignFirstResponder()
         
-        bar.setStackViewItems([textField, emoteButton, moreButton], for: .middle)
+        //bar.setStackViewItems([textField, emoteButton, moreButton], for: .middle)
         
 //        bar.middleStackViewLayout?.update(for: .top, constant: 4)
 //        bar.middleStackViewLayout?.update(for: .leading, constant: 8)
@@ -29,8 +29,35 @@ class LPRoomInputView: LPInputView {
 //        layer.borderWidth = 0.5
         bar.layer.borderColor = UIColor.orange.cgColor
         bar.layer.borderWidth = 1
+        
+        emoteButton.layer.borderColor = UIColor.blue.cgColor
+        emoteButton.layer.borderWidth = 1
+        
         textField.layer.borderColor = UIColor.blue.cgColor
         textField.layer.borderWidth = 1
+        
+        moreButton.layer.borderColor = UIColor.blue.cgColor
+        moreButton.layer.borderWidth = 1
+        
+        bar.addSubview(emoteButton)
+        bar.addSubview(textField)
+        bar.addSubview(moreButton)
+        emoteButton.lp.constraints {
+            $0.width.height.equal(toConstant: 50)
+            $0.leading.equal(to: bar)
+            $0.centerY.equal(to: textField)
+        }
+        textField.lp.constraints {
+            $0.top.equal(to: bar, constant: 8)
+            $0.bottom.equal(to: bar.lp.bottomSafe, constant: 8)
+            $0.leading.equal(to: emoteButton.trailingAnchor)
+            $0.trailing.equal(to: moreButton.leadingAnchor)
+        }
+        moreButton.lp.constraints {
+            $0.width.height.equal(toConstant: 50)
+            $0.trailing.equal(to: bar)
+            $0.centerY.equal(to: textField)
+        }
         
         emoteButton.addTarget(self, action: #selector(emoteButtonClicked), for: .touchUpInside)
         moreButton.addTarget(self, action: #selector(moreButtonClicked), for: .touchUpInside)

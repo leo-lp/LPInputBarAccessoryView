@@ -130,7 +130,7 @@ public class LPMarker {
             case .centerX:
                 let toAnchor: NSLayoutXAxisAnchor
                 switch anchor {
-                case let view as UIView: toAnchor = view.trailingAnchor
+                case let view as UIView: toAnchor = view.centerXAnchor
                 case let anchor as NSLayoutXAxisAnchor: toAnchor = anchor
                 default: fatalError("Only be `UIView` or `NSLayoutXAxisAnchor`")
                 }
@@ -138,7 +138,7 @@ public class LPMarker {
             case .centerY:
                 let toAnchor: NSLayoutYAxisAnchor
                 switch anchor {
-                case let view as UIView: toAnchor = view.bottomAnchor
+                case let view as UIView: toAnchor = view.centerYAnchor
                 case let anchor as NSLayoutYAxisAnchor: toAnchor = anchor
                 default: fatalError("Only be `UIView` or `NSLayoutYAxisAnchor`")
                 }

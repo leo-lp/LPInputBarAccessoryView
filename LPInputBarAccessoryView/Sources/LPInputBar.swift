@@ -47,15 +47,15 @@ public class LPInputBar: UIView {
             topStackViewLayout = LPLayoutSet(constraints: $0.top.leading.trailing.equal(to: self, constant: 6))
         }
         middleStackView.lp.constraints {
-            var t = $0.top.equal(to: topStackView.lp.bottom)
-            t.append(contentsOf: $0.leading.trailing.equal(to: self, constant: 6))
-            middleStackViewLayout = LPLayoutSet(constraints: t)
+            var constraints = $0.top.equal(to: topStackView.lp.bottom)
+            constraints.append(contentsOf: $0.leading.trailing.equal(to: self, constant: 6))
+            middleStackViewLayout = LPLayoutSet(constraints: constraints)
         }
         bottomStackView.lp.constraints {
-            var t = $0.top.equal(to: middleStackView.lp.bottom)
-            t.append(contentsOf: $0.leading.trailing.equal(to: self, constant: 6))
-            t.append(contentsOf: $0.bottom.equal(to: self.lp.bottomSafe, constant: 6))
-            bottomStackViewLayout = LPLayoutSet(constraints: t)
+            var constraints = $0.top.equal(to: middleStackView.lp.bottom)
+            constraints.append(contentsOf: $0.leading.trailing.equal(to: self, constant: 6))
+            constraints.append(contentsOf: $0.bottom.equal(to: self.lp.bottomSafe, constant: 6))
+            bottomStackViewLayout = LPLayoutSet(constraints: constraints)
         }
     }
     
@@ -70,32 +70,4 @@ public class LPInputBar: UIView {
         case .bottom: setItems(for: bottomStackView)
         }
     }
-    
-//    public func update(constant: CGFloat) {
-//        func update(with attr: NSLayoutConstraint.Attribute) {
-//            print("------------------")
-//            view.constraints.forEach {
-//                print($0.firstAttribute.rawValue, $0.secondAttribute.rawValue)
-//            }
-//            if let index = view.constraints.firstIndex(where: { $0.firstAttribute == attr }) {
-//                view.constraints[index].constant = constant
-//            } else {
-//                assert(false, "constraint(\(attr.rawValue)) not found.")
-//            }
-//        }
-//        attributes.forEach {
-//            switch $0 {
-//            case .top:      update(with: .top)
-//            case .bottom:   update(with: .bottom)
-//            case .leading:  update(with: .leading)
-//            case .trailing: update(with: .trailing)
-//            case .centerX:  update(with: .centerX)
-//            case .centerY:  update(with: .centerY)
-//            case .width:    update(with: .width)
-//            case .height:   update(with: .height)
-//            case .edges:    update(with: .top); update(with: .bottom); update(with: .leading); update(with: .trailing)
-//            }
-//        }
-//        attributes.removeAll()
-//    }
 }
