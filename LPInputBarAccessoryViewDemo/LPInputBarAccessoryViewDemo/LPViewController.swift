@@ -10,7 +10,7 @@ import UIKit
 import LPInputBarAccessoryView
 
 class LPViewController: UIViewController {
-    let inputBar = LPRoomInputView(isHiddenWhenResign: true)
+    let inputBar = LPRoomInputView(isHiddenWhenResign: false)
     
     override func viewDidLoad() {
         super.viewDidLoad()
