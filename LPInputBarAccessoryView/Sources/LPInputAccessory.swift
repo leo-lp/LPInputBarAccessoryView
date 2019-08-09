@@ -9,7 +9,6 @@
 import UIKit
 
 public class LPInputAccessory: UIView {
-    public let contentView = UIView()
     
     deinit {
         #if DEBUG
@@ -17,14 +16,12 @@ public class LPInputAccessory: UIView {
         #endif
     }
     
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
     public init(tag: Int) {
         super.init(frame: .zero)
         self.tag = tag
-        addSubview(contentView)
-        contentView.lp.constraints { $0.edges.equal(to: self) }
     }
 }

@@ -11,10 +11,11 @@ import UIKit
 open class LPInputView: UIView {
     private var accessoryViews: [(view: LPInputAccessory, bottom: NSLayoutConstraint, height: CGFloat)]?
     private let keyboard = LPKeyboardManager()
-    public let bar = LPInputBar()
     private var barBottomConstraint: NSLayoutConstraint?
     private var isHiddenWhenResign: Bool = true
     public var isShowing: Bool { return barBottomConstraint?.constant != 0.0 }
+    public let bar = LPInputBar()
+    public private(set) var accesoryContainer: UIView?
     
     // MARK: - init / deinit
     
@@ -69,18 +70,34 @@ open class LPInputView: UIView {
     }
     
     public func setAccessoryViews(_ views: [LPInputAccessory]) {
+        var container: UIView {
+            if let container = accesoryContainer { return container }
+            let container = UIView()
+            addSubview(container)
+            container.lp.constraints {
+                $0.top.equal(to: bar.bottomAnchor)
+                $0.leading.trailing.bottom.equal(to: self)
+            }
+            accesoryContainer = container
+            return container
+        }
         accessoryViews = views.map {
-            addSubview($0)
+            container.addSubview($0)
             var bottom: NSLayoutConstraint?
-            var hight: CGFloat = $0.frame.height
-            $0.constraints.forEach({ if $0.firstAttribute == .height { return hight = $0.constant } })
+            var height: CGFloat = $0.frame.height
+            if let index = $0.constraints.firstIndex(where: { $0.firstAttribute == .height }) {
+                height = $0.constraints[index].constant
+            } else {
+                $0.lp.constraints({ $0.height.equal(toConstant: height) })
+            }
+            if #available(iOS 11.0, *) { height += 45 }
             $0.lp.constraints({
-                $0.top.greaterOrEqual(to: bar.lp.bottom)
-                bottom = $0.bottom.equal(to: self, constant: -hight).first
-                $0.leading.trailing.equal(to: self)
+                $0.top.greaterOrEqual(to: container.topAnchor)
+                bottom = $0.bottom.equal(to: container.lp.bottomMargin, constant: -height).first
+                $0.leading.trailing.equal(to: container)
             })
             guard let bottomConstraint = bottom else { fatalError("bottom constraint can't is nil.") }
-            return ($0, bottomConstraint, hight)
+            return ($0, bottomConstraint, height)
         }
     }
     

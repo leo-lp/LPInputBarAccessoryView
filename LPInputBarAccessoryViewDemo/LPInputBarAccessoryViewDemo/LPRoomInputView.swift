@@ -37,7 +37,8 @@ class LPRoomInputView: LPInputView {
         moreView.layer.borderWidth = 10
         
         emoteView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        moreView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        moreView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+//        moreView.frame.size.height = 250
         
         setAccessoryViews([emoteView, moreView])
     }
