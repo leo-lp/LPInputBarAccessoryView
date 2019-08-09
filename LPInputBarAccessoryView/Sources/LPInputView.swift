@@ -15,6 +15,7 @@ open class LPInputView: UIView {
     private var isHiddenWhenResign: Bool = true
     public var isShowing: Bool { return barBottomConstraint?.constant != 0.0 }
     public let bar = LPInputBar()
+    public private(set) var barLayoutSet: LPLayoutSet?
     public private(set) var accesoryContainer: UIView?
     
     // MARK: - init / deinit
@@ -35,8 +36,13 @@ open class LPInputView: UIView {
         addSubview(bar)
         backgroundColor = UIColor.white
         bar.lp.constraints {
-            $0.top.leading.trailing.equal(to: self)
+            barLayoutSet = LPLayoutSet(constraints: $0.top.leading.trailing.equal(to: self))
             barBottomConstraint = $0.bottom.lessOrEqual(to: self.lp.bottom).first
+        }
+        setup()
+        if isHiddenWhenResign {
+            alpha = 0.3
+            isHidden = true
         }
         
         keyboard.on(event: .willChangeFrame) { [weak self](notification) in
@@ -45,7 +51,7 @@ open class LPInputView: UIView {
                 self.alpha = 1
                 self.isHidden = false
             } else if self.isHiddenWhenResign {
-                self.alpha = 0
+                self.alpha = 0.3
                 self.isHidden = true
             }
             self.linearAnimate({
@@ -57,11 +63,6 @@ open class LPInputView: UIView {
                 }
                 self.superview?.layoutIfNeeded()
             }, duration: notification.timeInterval, options: notification.animationOptions)
-        }
-        setup()
-        if isHiddenWhenResign {
-            alpha = 0
-            isHidden = true
         }
     }
     
@@ -90,10 +91,10 @@ open class LPInputView: UIView {
             } else {
                 $0.lp.constraints({ $0.height.equal(toConstant: height) })
             }
-            if #available(iOS 11.0, *) { height += 45 }
+            if #available(iOS 11.0, *) { height += 40 }
             $0.lp.constraints({
                 $0.top.greaterOrEqual(to: container.topAnchor)
-                bottom = $0.bottom.equal(to: container.lp.bottomMargin, constant: -height).first
+                bottom = $0.bottom.equal(to: container.lp.bottomSafe, constant: -height).first
                 $0.leading.trailing.equal(to: container)
             })
             guard let bottomConstraint = bottom else { fatalError("bottom constraint can't is nil.") }
@@ -121,7 +122,7 @@ open class LPInputView: UIView {
                 if !LPKeyboardManager.isKeyboardHidden { self.endEditing(true) }
                 self.accessoryViews?.forEach({ $0.bottom.constant = $0.height })
                 self.superview?.layoutIfNeeded()
-                if self.isHiddenWhenResign { self.alpha = 0 }
+                if self.isHiddenWhenResign { self.alpha = 0.3 }
             }, completion: { [weak self] in
                 guard let `self` = self else { return }
                 if self.isHiddenWhenResign { self.isHidden = true }
@@ -130,7 +131,7 @@ open class LPInputView: UIView {
             if !LPKeyboardManager.isKeyboardHidden { endEditing(true) }
             accessoryViews?.forEach { $0.bottom.constant = $0.height }
             if self.isHiddenWhenResign {
-                self.alpha = 0
+                self.alpha = 0.3
                 self.isHidden = true
             }
         }

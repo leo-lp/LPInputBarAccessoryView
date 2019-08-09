@@ -33,8 +33,14 @@ public struct LPLayoutConstraint {
     public var centerY: NSLayoutYAxisAnchor { return view.centerYAnchor }
     public var width: NSLayoutDimension { return view.widthAnchor }
     public var height: NSLayoutDimension { return view.heightAnchor }
-    public var topMargin: NSLayoutYAxisAnchor { return view.layoutMarginsGuide.topAnchor }
-    public var bottomMargin: NSLayoutYAxisAnchor { return view.layoutMarginsGuide.bottomAnchor }
+    public var topSafe: NSLayoutYAxisAnchor {
+        guard #available(iOS 11.0, *) else { return view.topAnchor }
+        return view.safeAreaLayoutGuide.topAnchor
+    }
+    public var bottomSafe: NSLayoutYAxisAnchor {
+        guard #available(iOS 11.0, *) else { return view.bottomAnchor }
+        return view.safeAreaLayoutGuide.bottomAnchor
+    }
 }
 
 public class LPMarker {
@@ -161,6 +167,52 @@ public class LPMarker {
         attributes.removeAll()
         NSLayoutConstraint.activate(constraints)
         return constraints
+    }
+    
+    public func update(constant: CGFloat) {
+        guard let superview = view.superview else { return assert(false, "superview is nil.") }
+        func update(with attr: NSLayoutConstraint.Attribute, constant: CGFloat) {
+            let block: (NSLayoutConstraint) -> Bool = {
+                if $0.firstAttribute == attr {
+                    if let first = $0.firstItem as? UIView, first == self.view { return true }
+                    if let second = $0.secondItem as? UIView, second == self.view { return true }
+                }
+                return false
+            }
+            if let index = view.constraints.firstIndex(where: block) {
+                view.constraints[index].constant = constant
+            } else if let index = superview.constraints.firstIndex(where: block) {
+                superview.constraints[index].constant = constant
+            } else {
+                assert(false, "constraint(\(attr.rawValue)) not found.")
+            }
+        }
+        attributes.forEach {
+            switch $0 {
+            case .top:
+                update(with: .top, constant: constant)
+            case .bottom:
+                update(with: .bottom, constant: -constant)
+            case .leading:
+                update(with: .leading, constant: constant)
+            case .trailing:
+                update(with: .trailing, constant: -constant)
+            case .centerX:
+                update(with: .centerX, constant: constant)
+            case .centerY:
+                update(with: .centerY, constant: constant)
+            case .width:
+                update(with: .width, constant: constant)
+            case .height:
+                update(with: .height, constant: constant)
+            case .edges:
+                update(with: .top, constant: constant)
+                update(with: .bottom, constant: -constant)
+                update(with: .leading, constant: constant)
+                update(with: .trailing, constant: -constant)
+            }
+        }
+        attributes.removeAll()
     }
     
     private enum LPAttributes { case top, bottom, leading, trailing, centerX, centerY, width, height, edges }

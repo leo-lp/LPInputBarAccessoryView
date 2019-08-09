@@ -20,11 +20,17 @@ class LPRoomInputView: LPInputView {
         textField.resignFirstResponder()
         
         bar.setStackViewItems([textField, emoteButton, moreButton], for: .middle)
+        
+//        bar.middleStackViewLayout?.update(for: .top, constant: 4)
+//        bar.middleStackViewLayout?.update(for: .leading, constant: 8)
+//        bar.middleStackViewLayout?.update(for: .trailing, constant: -8)
 
 //        layer.borderColor = UIColor.red.cgColor
-//        layer.borderWidth = 0.1
-//        bar.layer.borderColor = UIColor.blue.cgColor
-//        bar.layer.borderWidth = 1
+//        layer.borderWidth = 0.5
+        bar.layer.borderColor = UIColor.orange.cgColor
+        bar.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.blue.cgColor
+        textField.layer.borderWidth = 1
         
         emoteButton.addTarget(self, action: #selector(emoteButtonClicked), for: .touchUpInside)
         moreButton.addTarget(self, action: #selector(moreButtonClicked), for: .touchUpInside)
@@ -37,8 +43,8 @@ class LPRoomInputView: LPInputView {
         moreView.layer.borderWidth = 10
         
         emoteView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        moreView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-//        moreView.frame.size.height = 250
+//        moreView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        moreView.frame.size.height = 250
         
         setAccessoryViews([emoteView, moreView])
     }
